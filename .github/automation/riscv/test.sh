@@ -352,8 +352,12 @@ echo "Using QEMU for test execution"
 export QEMU_LD_PREFIX=/usr/riscv64-linux-gnu
 
 if [[ "$ONEDNN_TEST_SET" == "SMOKE" ]]; then
+    # Optional sharding for PR CI: ONEDNN_TEST_PART/ONEDNN_TEST_STRIDE select
+    # every STRIDE-th test starting at PART (defaults run all tests).
     set -x
-    ctest --no-tests=error --output-on-failure -E $("${SCRIPT_DIR}"/skipped-tests.sh)
+    ctest --no-tests=error --output-on-failure \
+            -I ${ONEDNN_TEST_PART:-1},,${ONEDNN_TEST_STRIDE:-1} \
+            -E $("${SCRIPT_DIR}"/skipped-tests.sh)
     set +x
 
 elif [[ "$ONEDNN_TEST_SET" == "CI" ]]; then
