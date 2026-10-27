@@ -21,37 +21,8 @@ name: "CI RISC-V"
 #* To avoid duplicate jobs running when both push and PR is satisfied, we use this:
 #* https://github.com/orgs/community/discussions/26940#discussioncomment-5686753
 on:
-  push:
-    branches: [main, "rls-*"]
-    paths:
-      - ".github/automation/riscv/**"
-      - ".github/workflows/ci-riscv.yml"
-      - "cmake/**"
-      - "examples/**"
-      - "include/**"
-      - "src/common/**"
-      - "src/cpu/*"
-      - "src/cpu/rv64/**"
-      - "tests/**"
-      - "CMakeLists.txt"
-  pull_request:
-     types: [opened, synchronize, reopened]
-     paths:
-      - ".github/automation/riscv/**"
-      - ".github/workflows/ci-riscv.yml"
-      - "cmake/**"
-      - "examples/**"
-      - "include/**"
-      - "src/common/**"
-      - "src/cpu/*"
-      - "src/cpu/rv64/**"
-      - "tests/**"
-      - "CMakeLists.txt"
-  #* allow manual trigger of workflow when needed.
   workflow_dispatch:
 
-#* Stop stale workflows when pull requests are updated: https://stackoverflow.com/a/70972844
-#* Does not apply to the main branch.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
